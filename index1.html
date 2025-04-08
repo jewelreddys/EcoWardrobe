@@ -1,0 +1,1578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoWardrobe | AI-Powered Sustainable Fashion</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #4CAF50;
+            --primary-dark: #388E3C;
+            --secondary: #8BC34A;
+            --dark: #2E7D32;
+            --light: #C8E6C9;
+            --accent: #FF9800;
+            --gray: #607D8B;
+            --light-gray: #f8f9fa;
+            --dark-gray: #455A64;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--light-gray);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        .header {
+            background-color: var(--dark);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            color: var(--secondary);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 1.5rem;
+            position: relative;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links a i {
+            margin-right: 5px;
+        }
+
+        .nav-links a:hover {
+            color: var(--light);
+        }
+
+        .nav-links .active a {
+            color: var(--secondary);
+        }
+
+        .nav-links .badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            font-size: 10px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Button Styles */
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.6rem 1.3rem;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.3s;
+            font-weight: 500;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-sm {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-lg {
+            padding: 0.8rem 1.8rem;
+            font-size: 1.1rem;
+        }
+
+        .btn-accent {
+            background: var(--accent);
+        }
+
+        .btn-warning {
+            background: var(--accent);
+            color: #333;
+        }
+
+        /* Card Styles */
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        .card-body {
+            padding: 0.5rem 0;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+        }
+
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.7rem center;
+            background-size: 1rem;
+        }
+
+        /* Alert Styles */
+        .alert {
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .alert i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .alert-success {
+            background-color: rgba(76, 175, 80, 0.1);
+            color: var(--primary);
+            border-left: 4px solid var(--primary);
+        }
+
+        .alert-warning {
+            background-color: rgba(255, 152, 0, 0.1);
+            color: var(--accent);
+            border-left: 4px solid var(--accent);
+        }
+
+        .alert-info {
+            background-color: rgba(46, 125, 50, 0.1);
+            color: var(--dark);
+            border-left: 4px solid var(--dark);
+        }
+
+        /* Table Styles */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+        }
+
+        .table th, .table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .table th {
+            background-color: rgba(46, 125, 50, 0.05);
+            font-weight: 600;
+            color: var(--dark);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+        }
+
+        .table tr:hover {
+            background-color: rgba(46, 125, 50, 0.02);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Badge Styles */
+        .badge {
+            display: inline-block;
+            padding: 0.35em 0.65em;
+            font-size: 0.75em;
+            font-weight: 700;
+            line-height: 1;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: 50rem;
+        }
+
+        .badge-pill {
+            border-radius: 50rem;
+        }
+
+        .badge-primary {
+            color: white;
+            background-color: var(--primary);
+        }
+
+        .badge-secondary {
+            color: white;
+            background-color: var(--gray);
+        }
+
+        .badge-success {
+            color: white;
+            background-color: var(--primary);
+        }
+
+        .badge-warning {
+            color: #212529;
+            background-color: var(--accent);
+        }
+
+        .badge-dark {
+            color: white;
+            background-color: var(--dark);
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .dashboard-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .dashboard-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .dashboard-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .dashboard-card p {
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+
+        /* Animation Classes */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .slide-up {
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { 
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to { 
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Utility Classes */
+        .text-center { text-align: center; }
+        .text-primary { color: var(--primary); }
+        .text-accent { color: var(--accent); }
+        .text-dark { color: var(--dark); }
+        .text-muted { color: var(--gray); }
+
+        .mb-0 { margin-bottom: 0; }
+        .mb-1 { margin-bottom: 0.5rem; }
+        .mb-2 { margin-bottom: 1rem; }
+        .mb-3 { margin-bottom: 1.5rem; }
+        .mb-4 { margin-bottom: 2rem; }
+
+        .mt-0 { margin-top: 0; }
+        .mt-1 { margin-top: 0.5rem; }
+        .mt-2 { margin-top: 1rem; }
+        .mt-3 { margin-top: 1.5rem; }
+        .mt-4 { margin-top: 2rem; }
+
+        .p-3 { padding: 1.5rem; }
+
+        .d-flex { display: flex; }
+        .align-items-center { align-items: center; }
+        .justify-content-between { justify-content: space-between; }
+
+        /* Closet Styles */
+        .closet-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .closet-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+
+        .closet-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .closet-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .closet-item-info {
+            padding: 1rem;
+            background: white;
+        }
+
+        .closet-item-category {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 0.3rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .closet-item-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+        }
+
+        /* Outfit Styles */
+        .outfit-card {
+            display: flex;
+            flex-direction: column;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .outfit-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .outfit-images {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            padding: 5px;
+        }
+
+        .outfit-images img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .outfit-details {
+            padding: 1rem;
+        }
+
+        .outfit-weather {
+            display: flex;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+
+        /* Sustainability Stats */
+        .sustainability-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-card .icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .stat-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .stat-card p {
+            color: var(--gray);
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .dashboard-grid, .sustainability-stats {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 70px);
+                background: var(--dark);
+                flex-direction: column;
+                align-items: center;
+                padding: 2rem 0;
+                transition: all 0.3s ease;
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .nav-links li {
+                margin: 1rem 0;
+            }
+
+            .dashboard-grid, .sustainability-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .closet-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--dark) 0%, var(--primary) 100%);
+            color: white;
+            padding: 5rem 0;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            animation: fadeInUp 1s ease 0.2s forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Features Section */
+        .features {
+            padding: 3rem 0;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            text-align: center;
+            height: 100%;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        /* Stats Section */
+        .stats {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
+            color: white;
+            padding: 4rem 0;
+            margin: 3rem 0;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 0 1.5rem;
+        }
+
+        .footer-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-links h4 {
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .footer-links h4::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 2px;
+            background: var(--secondary);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--secondary);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: inline-block;
+            width: 2rem;
+            height: 2rem;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="#" class="logo">
+                    <i class="fas fa-leaf"></i> EcoWardrobe
+                </a>
+                <button class="mobile-menu-btn" id="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <ul class="nav-links" id="nav-links">
+                    <li class="active"><a href="#home"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="#closet"><i class="fas fa-tshirt"></i> My Closet</a></li>
+                    <li><a href="#outfits"><i class="fas fa-star"></i> Outfits</a></li>
+                    <li><a href="#marketplace"><i class="fas fa-exchange-alt"></i> Marketplace</a></li>
+                    <li><a href="#sustainability"><i class="fas fa-globe-americas"></i> Sustainability</a></li>
+                    <li>
+                        <a href="#" id="login-btn"><i class="fas fa-sign-in-alt"></i> Login</a>
+                        <span class="badge">2</span>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h1>Smart Wardrobe, Sustainable Future</h1>
+            <p>AI-powered clothing management that reduces waste and helps you look your best while saving the planet.</p>
+            <a href="#closet" class="btn btn-lg">Start Organizing</a>
+            <a href="#marketplace" class="btn btn-outline btn-lg">Explore Marketplace</a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2 class="text-center mb-4">Why Choose EcoWardrobe?</h2>
+            <div class="dashboard-grid">
+                <div class="feature-card slide-up" style="animation-delay: 0.1s;">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>AI-Powered Organization</h3>
+                    <p>Automatically categorize your clothes with image recognition and smart tagging.</p>
+                </div>
+                <div class="feature-card slide-up" style="animation-delay: 0.2s;">
+                    <div class="feature-icon">
+                        <i class="fas fa-magic"></i>
+                    </div>
+                    <h3>Smart Outfit Suggestions</h3>
+                    <p>Get personalized outfit recommendations based on weather, occasion, and your style.</p>
+                </div>
+                <div class="feature-card slide-up" style="animation-delay: 0.3s;">
+                    <div class="feature-icon">
+                        <i class="fas fa-recycle"></i>
+                    </div>
+                    <h3>Sustainable Marketplace</h3>
+                    <p>Buy, sell, or swap clothes with our eco-conscious community to extend garment life.</p>
+                </div>
+                <div class="feature-card slide-up" style="animation-delay: 0.4s;">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Impact Tracking</h3>
+                    <p>See how your sustainable choices reduce your fashion footprint over time.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="container">
+            <div class="dashboard-grid">
+                <div class="stat-item">
+                    <div class="stat-number" id="clothes-saved">12,894</div>
+                    <div class="stat-label">Clothes Saved From Landfills</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="water-saved">5.2M</div>
+                    <div class="stat-label">Liters of Water Saved</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="co2-reduced">382K</div>
+                    <div class="stat-label">KG of CO₂ Reduced</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="users">53,271</div>
+                    <div class="stat-label">Eco-Conscious Users</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Closet Section -->
+    <section class="container" id="closet">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title"><i class="fas fa-tshirt"></i> My Digital Closet</h2>
+                <button class="btn btn-accent" id="add-clothing-btn">
+                    <i class="fas fa-plus"></i> Add Clothing
+                </button>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> Upload photos of your clothes and we'll automatically categorize them using AI.
+                </div>
+                
+                <div class="tabs">
+                    <div class="tab active" data-tab="all">All Items</div>
+                    <div class="tab" data-tab="tops">Tops</div>
+                    <div class="tab" data-tab="bottoms">Bottoms</div>
+                    <div class="tab" data-tab="dresses">Dresses</div>
+                    <div class="tab" data-tab="outerwear">Outerwear</div>
+                    <div class="tab" data-tab="accessories">Accessories</div>
+                </div>
+                
+                <div class="closet-grid">
+                    <!-- Updated closet items with new image URLs -->
+                    <div class="closet-item">
+                        <img src="https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&h=300&q=80" alt="White Cotton Shirt">
+                        <span class="closet-item-category">Top</span>
+                        <div class="closet-item-info">
+                            <h4>White Cotton Shirt</h4>
+                            <div class="closet-item-actions">
+                                <button class="btn btn-sm btn-outline">Details</button>
+                                <button class="btn btn-sm">Add to Outfit</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="closet-item">
+                        <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&h=300&q=80" alt="Blue Denim Jeans">
+                        <span class="closet-item-category">Bottom</span>
+                        <div class="closet-item-info">
+                            <h4>Blue Denim Jeans</h4>
+                            <div class="closet-item-actions">
+                                <button class="btn btn-sm btn-outline">Details</button>
+                                <button class="btn btn-sm">Add to Outfit</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="closet-item">
+                        <img src="https://images.unsplash.com/photo-1585487000160-6ebcfceb0d03?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&h=300&q=80" alt="Floral Summer Dress">
+                        <span class="closet-item-category">Dress</span>
+                        <div class="closet-item-info">
+                            <h4>Floral Summer Dress</h4>
+                            <div class="closet-item-actions">
+                                <button class="btn btn-sm btn-outline">Details</button>
+                                <button class="btn btn-sm">Add to Outfit</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="closet-item">
+                        <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&h=300&q=80" alt="Black Leather Jacket">
+                        <span class="closet-item-category">Outerwear</span>
+                        <div class="closet-item-info">
+                            <h4>Black Leather Jacket</h4>
+                            <div class="closet-item-actions">
+                                <button class="btn btn-sm btn-outline">Details</button>
+                                <button class="btn btn-sm">Add to Outfit</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="closet-item">
+                        <img src="https://images.unsplash.com/photo-1591348122449-02525d70379b?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&h=300&q=80" alt="Silk Scarf">
+                        <span class="closet-item-category">Accessory</span>
+                        <div class="closet-item-info">
+                            <h4>Silk Scarf</h4>
+                            <div class="closet-item-actions">
+                                <button class="btn btn-sm btn-outline">Details</button>
+                                <button class="btn btn-sm">Add to Outfit</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="closet-item">
+                        <img src="https://images.unsplash.com/photo-1600269452121-4f2416e55c28?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&h=300&q=80" alt="White Sneakers">
+                        <span class="closet-item-category">Footwear</span>
+                        <div class="closet-item-info">
+                            <h4>White Sneakers</h4>
+                            <div class="closet-item-actions">
+                                <button class="btn btn-sm btn-outline">Details</button>
+                                <button class="btn btn-sm">Add to Outfit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Outfit Suggestions Section -->
+    <section class="container mt-4" id="outfits">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title"><i class="fas fa-star"></i> Today's Outfit Suggestions</h2>
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-cloud-sun mr-2" style="font-size: 1.5rem; color: var(--accent);"></i>
+                    <span>24°C, Sunny</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-success">
+                    <i class="fas fa-lightbulb"></i> Based on your schedule, we recommend these outfits for your day.
+                </div>
+                
+                <div class="dashboard-grid">
+                    <div class="outfit-card">
+                        <div class="outfit-images">
+                            <img src="https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&h=300&q=80" alt="Top">
+                            <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&h=300&q=80" alt="Bottom">
+                            <img src="https://images.unsplash.com/photo-1600269452121-4f2416e55c28?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&h=300&q=80" alt="Shoes">
+                        </div>
+                        <div class="outfit-details">
+                            <h4>Casual Day Out</h4>
+                            <p>Perfect for running errands or meeting friends</p>
+                            <div class="outfit-weather">
+                                <i class="fas fa-temperature-high mr-1"></i>
+                                <span>Comfortable up to 28°C</span>
+                            </div>
+                            <button class="btn btn-sm btn-block mt-2">Select This Outfit</button>
+                        </div>
+                    </div>
+                    <div class="outfit-card">
+                        <div class="outfit-images">
+                            <img src="https://images.unsplash.com/photo-1598033129183-c4f50c736f10?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&h=300&q=80" alt="Top">
+                            <img src="https://images.unsplash.com/photo-1551232864-3f0890e580d9?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&h=300&q=80" alt="Bottom">
+                            <img src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&h=300&q=80" alt="Shoes">
+                        </div>
+                        <div class="outfit-details">
+                            <h4>Business Casual</h4>
+                            <p>Professional yet comfortable for work</p>
+                            <div class="outfit-weather">
+                                <i class="fas fa-temperature-high mr-1"></i>
+                                <span>Comfortable up to 26°C</span>
+                            </div>
+                            <button class="btn btn-sm btn-block mt-2">Select This Outfit</button>
+                        </div>
+                    </div>
+                    <div class="outfit-card">
+                        <div class="outfit-images">
+                            <img src="https://images.unsplash.com/photo-1585487000160-6ebcfceb0d03?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&h=300&q=80" alt="Dress">
+                            <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&h=300&q=80" alt="Shoes">
+                            <img src="https://images.unsplash.com/photo-1590874103328-eac38a683ce7?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&h=300&q=80" alt="Accessory">
+                        </div>
+                        <div class="outfit-details">
+                            <h4>Evening Out</h4>
+                            <p>Elegant look for dinner or events</p>
+                            <div class="outfit-weather">
+                                <i class="fas fa-temperature-low mr-1"></i>
+                                <span>Comfortable down to 20°C</span>
+                            </div>
+                            <button class="btn btn-sm btn-block mt-2">Select This Outfit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marketplace Section -->
+    <section class="container mt-4" id="marketplace">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title"><i class="fas fa-exchange-alt"></i> Sustainable Marketplace</h2>
+                <div class="tabs">
+                    <div class="tab active" data-tab="buy">Buy</div>
+                    <div class="tab" data-tab="sell">Sell</div>
+                    <div class="tab" data-tab="swap">Swap</div>
+                    <div class="tab" data-tab="rent">Rent</div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> Extend the life of clothing and reduce fashion waste by buying pre-loved items or giving your unused clothes a new home.
+                </div>
+                
+                <div class="closet-grid">
+                    <div class="closet-item">
+                        <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&h=300&q=80" alt="Vintage Denim Jacket">
+                        <span class="closet-item-category">$45</span>
+                        <div class="closet-item-info">
+                            <h4>Vintage Denim Jacket</h4>
+                            <p>Size M | Excellent condition</p>
+                            <div class="closet-item-actions">
+                                <button class="btn btn-sm btn-outline">Details</button>
+                                <button class="btn btn-sm">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="closet-item">
+                        <img src="https://images.unsplash.com/photo-1598033129183-c4f50c736f10?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&h=300&q=80" alt="Silk Blouse">
+                        <span class="closet-item-category">Swap</span>
+                        <div class="closet-item-info">
+                            <h4>Silk Blouse</h4>
+                            <p>Size S | Like new</p>
+                            <div class="closet-item-actions">
+                                <button class="btn btn-sm btn-outline">Details</button>
+                                <button class="btn btn-sm">Offer Swap</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="closet-item">
+                        <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&h=300&q=80" alt="Wedding Dress">
+                        <span class="closet-item-category">Rent</span>
+                        <div class="closet-item-info">
+                            <h4>Wedding Dress</h4>
+                            <p>Size 6 | $120/week</p>
+                            <div class="closet-item-actions">
+                                <button class="btn btn-sm btn-outline">Details</button>
+                                <button class="btn btn-sm">Rent Now</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="closet-item">
+                        <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&h=300&q=80" alt="Leather Boots">
+                        <span class="closet-item-category">$65</span>
+                        <div class="closet-item-info">
+                            <h4>Leather Boots</h4>
+                            <p>Size 8 | Good condition</p>
+                            <div class="closet-item-actions">
+                                <button class="btn btn-sm btn-outline">Details</button>
+                                <button class="btn btn-sm">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sustainability Impact Section -->
+    <section class="container mt-4" id="sustainability">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title"><i class="fas fa-globe-americas"></i> Your Sustainability Impact</h2>
+                <button class="btn btn-outline" id="share-impact">
+                    <i class="fas fa-share-alt"></i> Share
+                </button>
+            </div>
+            <div class="card-body">
+                <div class="sustainability-stats">
+                    <div class="stat-card">
+                        <div class="icon">
+                            <i class="fas fa-tshirt"></i>
+                        </div>
+                        <h3>28</h3>
+                        <p>Items kept in rotation</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon">
+                            <i class="fas fa-tint"></i>
+                        </div>
+                        <h3>42,000</h3>
+                        <p>Liters of water saved</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon">
+                            <i class="fas fa-cloud"></i>
+                        </div>
+                        <h3>156</h3>
+                        <p>KG of CO₂ prevented</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon">
+                            <i class="fas fa-landmark"></i>
+                        </div>
+                        <h3>9</h3>
+                        <p>Items saved from landfill</p>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <h4>Your Sustainability Timeline</h4>
+                    <canvas id="sustainability-chart" height="150"></canvas>
+                </div>
+                
+                <div class="mt-4">
+                    <h4>Eco-Friendly Tips</h4>
+                    <div class="dashboard-grid">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title"><i class="fas fa-washing-machine"></i> Wash Smarter</h5>
+                            </div>
+                            <div class="card-body">
+                                <p>Wash clothes in cold water to save energy and preserve fabrics. Full loads only!</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title"><i class="fas fa-seedling"></i> Natural Fibers</h5>
+                            </div>
+                            <div class="card-body">
+                                <p>Choose organic cotton, linen, or hemp for your next purchase - better for the planet.</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title"><i class="fas fa-hands-helping"></i> Clothing Swap</h5>
+                            </div>
+                            <div class="card-body">
+                                <p>Host a swap party with friends to refresh your wardrobe without buying new.</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title"><i class="fas fa-tools"></i> Repair & Upcycle</h5>
+                            </div>
+                            <div class="card-body">
+                                <p>Learn basic mending skills or transform old clothes into something new.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer mt-4">
+        <div class="container">
+            <div class="footer-links">
+                <div>
+                    <h4>EcoWardrobe</h4>
+                    <p>AI-powered sustainable wardrobe management that helps you look good while doing good.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4>Features</h4>
+                    <ul>
+                        <li><a href="#closet">Digital Closet</a></li>
+                        <li><a href="#outfits">Outfit Suggestions</a></li>
+                        <li><a href="#marketplace">Marketplace</a></li>
+                        <li><a href="#sustainability">Impact Tracking</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Sustainability</h4>
+                    <ul>
+                        <li><a href="#">Our Mission</a></li>
+                        <li><a href="#">Fashion Footprint</a></li>
+                        <li><a href="#">Eco Tips</a></li>
+                        <li><a href="#">Partners</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 EcoWardrobe. All rights reserved. <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Add Clothing Modal -->
+    <div class="modal" id="addClothingModal">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-tshirt"></i> Add Clothing Item</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="add-clothing-form">
+                    <div class="form-group">
+                        <label for="clothing-image" class="form-label">Upload Image</label>
+                        <input type="file" class="form-control" id="clothing-image" accept="image/*" required>
+                        <small class="text-muted">Our AI will automatically categorize your item</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="clothing-category" class="form-label">Category</label>
+                        <select class="form-control" id="clothing-category" required>
+                            <option value="">Select Category</option>
+                            <option value="top">Top</option>
+                            <option value="bottom">Bottom</option>
+                            <option value="dress">Dress</option>
+                            <option value="outerwear">Outerwear</option>
+                            <option value="accessory">Accessory</option>
+                            <option value="footwear">Footwear</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="clothing-color" class="form-label">Color</label>
+                        <input type="color" class="form-control" id="clothing-color" value="#ffffff" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="clothing-season" class="form-label">Season</label>
+                        <select class="form-control" id="clothing-season" required>
+                            <option value="all">All Seasons</option>
+                            <option value="spring">Spring</option>
+                            <option value="summer">Summer</option>
+                            <option value="fall">Fall</option>
+                            <option value="winter">Winter</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="clothing-notes" class="form-label">Notes</label>
+                        <textarea class="form-control" id="clothing-notes" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-block">Add to Closet</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const navLinks = document.getElementById('nav-links');
+            
+            if (mobileMenuBtn && navLinks) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    navLinks.classList.toggle('active');
+                });
+            }
+            
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                        
+                        // Close mobile menu if open
+                        if (navLinks.classList.contains('active')) {
+                            navLinks.classList.remove('active');
+                        }
+                    }
+                });
+            });
+            
+            // Form validation
+            const forms = document.querySelectorAll('form');
+            forms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const requiredFields = form.querySelectorAll('[required]');
+                    let isValid = true;
+                    
+                    requiredFields.forEach(field => {
+                        if (!field.value.trim()) {
+                            field.classList.add('error');
+                            isValid = false;
+                        } else {
+                            field.classList.remove('error');
+                        }
+                    });
+                    
+                    if (isValid) {
+                        // Show success message
+                        const alert = document.createElement('div');
+                        alert.className = 'alert alert-success';
+                        alert.innerHTML = '<i class="fas fa-check-circle"></i> Action completed successfully!';
+                        form.parentNode.insertBefore(alert, form.nextSibling);
+                        
+                        // Reset form if needed
+                        if (form.id === 'add-clothing-form') {
+                            document.getElementById('addClothingModal').classList.remove('show');
+                        } else {
+                            form.reset();
+                        }
+                        
+                        // Remove alert after 5 seconds
+                        setTimeout(() => {
+                            alert.remove();
+                        }, 5000);
+                    } else {
+                        // Show error message
+                        const alert = document.createElement('div');
+                        alert.className = 'alert alert-warning';
+                        alert.innerHTML = '<i class="fas fa-exclamation-circle"></i> Please fill in all required fields.';
+                        form.parentNode.insertBefore(alert, form.nextSibling);
+                        
+                        // Remove alert after 5 seconds
+                        setTimeout(() => {
+                            alert.remove();
+                        }, 5000);
+                    }
+                });
+            });
+            
+            // Tab functionality
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabContainer = this.parentNode;
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Remove active class from all tabs in this container
+                    tabContainer.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                    
+                    // If this is a main content tab, switch content
+                    if (tabContainer.classList.contains('tabs')) {
+                        const tabContentId = `${tabId}-tab`;
+                        const tabContents = tabContainer.parentNode.querySelectorAll('.tab-content');
+                        
+                        tabContents.forEach(content => {
+                            content.classList.remove('active');
+                            if (content.id === tabContentId) {
+                                content.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            });
+            
+            // Modal functionality
+            const loginBtn = document.getElementById('login-btn');
+            const addClothingBtn = document.getElementById('add-clothing-btn');
+            const addClothingModal = document.getElementById('addClothingModal');
+            const closeButtons = document.querySelectorAll('.close');
+            
+            if (addClothingBtn) {
+                addClothingBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    addClothingModal.classList.add('show');
+                });
+            }
+            
+            closeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    this.closest('.modal').classList.remove('show');
+                });
+            });
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', function(e) {
+                if (e.target.classList.contains('modal')) {
+                    e.target.classList.remove('show');
+                }
+            });
+            
+            // Sustainability Chart
+            if (document.getElementById('sustainability-chart')) {
+                const ctx = document.getElementById('sustainability-chart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                        datasets: [
+                            {
+                                label: 'Water Saved (liters)',
+                                data: [2500, 4200, 3800, 5500, 7200, 8900, 10200],
+                                borderColor: 'rgba(76, 175, 80, 1)',
+                                backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                                tension: 0.3,
+                                fill: true
+                            },
+                            {
+                                label: 'CO₂ Reduced (kg)',
+                                data: [12, 18, 25, 32, 45, 58, 72],
+                                borderColor: 'rgba(139, 195, 74, 1)',
+                                backgroundColor: 'rgba(139, 195, 74, 0.1)',
+                                tension: 0.3,
+                                fill: true
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `${context.dataset.label}: ${context.raw.toLocaleString()}`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // Animate stats counters
+            function animateValue(id, start, end, duration) {
+                const obj = document.getElementById(id);
+                let startTimestamp = null;
+                const step = (timestamp) => {
+                    if (!startTimestamp) startTimestamp = timestamp;
+                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                    const value = Math.floor(progress * (end - start) + start);
+                    obj.innerHTML = value.toLocaleString();
+                    if (progress < 1) {
+                        window.requestAnimationFrame(step);
+                    }
+                };
+                window.requestAnimationFrame(step);
+            }
+            
+            // Start animations when stats come into view
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateValue('clothes-saved', 0, 12894, 2000);
+                        animateValue('water-saved', 0, 5200, 2000);
+                        animateValue('co2-reduced', 0, 382, 2000);
+                        animateValue('users', 0, 53271, 2000);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            const statsSection = document.querySelector('.stats');
+            if (statsSection) {
+                observer.observe(statsSection);
+            }
+            
+            // Share impact button
+            document.getElementById('share-impact')?.addEventListener('click', function() {
+                this.innerHTML = '<i class="fas fa-check"></i> Copied to clipboard';
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fas fa-share-alt"></i> Share';
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>
